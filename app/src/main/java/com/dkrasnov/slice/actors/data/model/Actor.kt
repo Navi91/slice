@@ -1,3 +1,3 @@
 package com.dkrasnov.slice.actors.data.model
 
-data class Actor(val name: String, val imagePath: String)
+data class Actor(val name: String, val imagePath: String, val serial: Serial)

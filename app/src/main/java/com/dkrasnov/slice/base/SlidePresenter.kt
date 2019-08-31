@@ -4,7 +4,7 @@ import com.arellomobile.mvp.MvpPresenter
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
-class SlidePresenter<T : SlideView> : MvpPresenter<T>() {
+open class SlidePresenter<T : SlideView> : MvpPresenter<T>() {
 
     private val disposables = CompositeDisposable()
 
