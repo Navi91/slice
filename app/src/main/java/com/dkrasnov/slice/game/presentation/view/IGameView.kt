@@ -19,5 +19,5 @@ interface IGameView: SlideView {
     fun setProgress(progress: Boolean)
 
     @StateStrategyType(OneExecutionStateStrategy::class)
-    fun showGameView()
+    fun showGameOveraly()
 }

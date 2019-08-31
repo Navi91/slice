@@ -14,9 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/task"
-        android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="visible" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/taskTextView"
@@ -26,32 +24,35 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:text="@string/game_task"
-        android:visibility="gone"
         app:autoSizeTextType="uniform"
-        app:layout_constraintTop_toBottomOf="@+id/titleTextView"
-        tools:visibility="visible" />
+        app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
 
-    <Button
-        android:id="@+id/thronesButton"
-        app:layout_constraintStart_toStartOf="parent"
+    <TextView
+        android:id="@+id/thronesView"
+        style="@style/AnswerTextView"
+        android:background="@drawable/bg_answer_left"
+        android:text="@string/left_answer_text"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:text="@string/game_of_thrones"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        app:layout_constraintEnd_toStartOf="@+id/ringsView"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/ringsButton"
-        app:layout_constraintStart_toStartOf="parent"
+    <TextView
+        android:id="@+id/ringsView"
+        style="@style/AnswerTextView"
+        android:background="@drawable/bg_answer_right"
+        android:text="@string/right_answer_text"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:text="@string/the_lord_of_rings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/thronesView" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/gameOverlayGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="titleTextView, taskTextView, thronesButton, ringsButton"/>
+        android:visibility="gone"
+        app:constraint_referenced_ids="titleTextView, taskTextView, thronesView, ringsView"
+        tools:visibility="visible" />
 
     <ProgressBar
         android:id="@+id/progressBar"

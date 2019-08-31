@@ -10,7 +10,26 @@
         <item name="android:textColor">@color/primaryTextColor</item>
     </style>
 
+    <style name="AnswerTextView" parent="AppTextView.White.Center">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">96dp</item>
+        <item name="android:paddingLeft">48dp</item>
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:paddingRight">48dp</item>
+        <item name="android:paddingBottom">24dp</item>
+        <item name="autoSizeTextType">uniform</item>
+        <item name="android:gravity">center</item>
+    </style>
+
     <style name="AppTextView" />
+
+    <style name="AppTextView.White">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="AppTextView.White.Center">
+        <item name="android:gravity">center</item>
+    </style>
 
     <style name="AppTextView.18">
         <item name="android:textSize">18sp</item>

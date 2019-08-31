@@ -28,6 +28,7 @@ class GamePresenter : SlidePresenter<IGameView>() {
             .doOnSubscribe { viewState.setProgress(true) }
             .doAfterTerminate { viewState.setProgress(false) }
             .subscribe({
+                viewState.showGameOveraly()
 //                viewState.showActor(it.first())
             }, {
                 viewState.showLoadGameError()

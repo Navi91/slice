@@ -40,7 +40,7 @@ class GameFragment : SlideFragment(), IGameView {
         log("show actor $actor")
     }
 
-    override fun showGameView() {
+    override fun showGameOveraly() {
         TransitionManager.beginDelayedTransition(view as ViewGroup)
 
         gameOverlayGroup.setVisible(true)

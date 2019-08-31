@@ -5,4 +5,6 @@
     <string name="game_task">Разделите героев сериала</string>
     <string name="game_of_thrones">Игра престолов</string>
     <string name="the_lord_of_rings">Властелин колец</string>
+    <string name="left_answer_text">Игра\nпрестолов</string>
+    <string name="right_answer_text">Властелин\nколец</string>
 </resources>
