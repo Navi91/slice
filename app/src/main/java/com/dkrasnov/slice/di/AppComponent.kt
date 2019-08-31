@@ -3,6 +3,7 @@ package com.dkrasnov.slice.di
 import android.app.Application
 import com.dkrasnov.slice.actors.di.ActorsModule
 import com.dkrasnov.slice.game.di.GameModule
+import com.dkrasnov.slice.game.presentation.presenter.GamePresenter
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -19,4 +20,6 @@ interface AppComponent {
 
         fun build(): AppComponent
     }
+
+    fun inject(gamePresenter: GamePresenter)
 }

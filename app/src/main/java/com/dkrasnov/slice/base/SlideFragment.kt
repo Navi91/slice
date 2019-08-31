@@ -1,5 +1,5 @@
 package com.dkrasnov.slice.base
 
-import androidx.fragment.app.Fragment
+import com.arellomobile.mvp.MvpAppCompatFragment
 
-open class SlideFragment: Fragment()
+open class SlideFragment : MvpAppCompatFragment()

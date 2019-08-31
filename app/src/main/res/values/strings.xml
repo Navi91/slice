@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Slice</string>
+    <string name="error_load_game">Не удалось загрузить игру</string>
+    <string name="task">Задание</string>
+    <string name="game_task">Разделите героев сериала</string>
 </resources>

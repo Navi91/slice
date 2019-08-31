@@ -8,6 +8,6 @@ import javax.inject.Inject
 class ActorsDataSource @Inject constructor(private val context: Context): IActorsDataSource {
 
     override fun getActors(): Single<List<Actor>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return Single.just(emptyList())
     }
 }
