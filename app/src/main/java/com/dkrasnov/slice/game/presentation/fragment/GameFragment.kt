@@ -41,7 +41,9 @@ class GameFragment : SlideFragment(), IGameView {
     }
 
     override fun showGameView() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TransitionManager.beginDelayedTransition(view as ViewGroup)
+
+        gameOverlayGroup.setVisible(true)
     }
 
     override fun setProgress(progress: Boolean) {

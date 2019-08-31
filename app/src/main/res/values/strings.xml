@@ -3,4 +3,6 @@
     <string name="error_load_game">Не удалось загрузить игру</string>
     <string name="task">Задание</string>
     <string name="game_task">Разделите героев сериала</string>
+    <string name="game_of_thrones">Игра престолов</string>
+    <string name="the_lord_of_rings">Властелин колец</string>
 </resources>
