@@ -1,8 +1,14 @@
 package com.dkrasnov.slice.game.presentation.fragment
 
+import android.animation.Animator
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.os.Bundle
+import android.transition.AutoTransition
+import android.transition.ChangeBounds
 import android.transition.TransitionManager
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -22,6 +28,8 @@ class GameFragment : SlideFragment(), IGameView {
 
     companion object {
 
+        private const val SCALE_BUTTON_DURATION = 250L
+
         fun newInstance() = GameFragment()
     }
 
@@ -29,6 +37,7 @@ class GameFragment : SlideFragment(), IGameView {
     lateinit var presenter: GamePresenter
 
     private var listener: GameFragmentLister? = null
+    private var currentAnimator: Animator? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.f_game, container, false)
@@ -42,6 +51,29 @@ class GameFragment : SlideFragment(), IGameView {
         }
         ringsView.setOnClickListener {
             presenter.onRingsSelected()
+        }
+
+        thronesView.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                log("throne down")
+                scaleUpThronesView()
+            } else if (event.action == MotionEvent.ACTION_UP) {
+                log("throne up")
+                normalizeScale()
+            }
+
+            return@setOnTouchListener false
+        }
+        ringsView.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                log("ring down")
+                scaleUpRingsView()
+            } else if (event.action == MotionEvent.ACTION_UP) {
+                log("ring up")
+                normalizeScale()
+            }
+
+            return@setOnTouchListener false
         }
     }
 
@@ -64,8 +96,8 @@ class GameFragment : SlideFragment(), IGameView {
     }
 
     override fun showGameResults() {
-        val  height = actorImageView.measuredHeight.toFloat()
-        val  width = actorImageView.measuredWidth.toFloat()
+        val height = actorImageView.measuredHeight.toFloat()
+        val width = actorImageView.measuredWidth.toFloat()
 
         listener?.onRequestGameResults(height / width)
     }
@@ -80,6 +112,39 @@ class GameFragment : SlideFragment(), IGameView {
 
     fun setListener(listener: GameFragmentLister) {
         this.listener = listener
+    }
+
+    private fun scaleUpThronesView() {
+        updateViewScales(1.1f, 0.9f)
+    }
+
+    private fun scaleUpRingsView() {
+        updateViewScales(0.9f, 1.1f)
+    }
+
+    private fun normalizeScale() {
+        updateViewScales(1f, 1f)
+    }
+
+    private fun updateViewScales(thronesScale: Float, ringsScale: Float) {
+        currentAnimator?.cancel()
+        currentAnimator = AnimatorSet().apply {
+            play(createScaleViewAnimator(thronesView, thronesScale)).with(createScaleViewAnimator(ringsView, ringsScale))
+        }
+        currentAnimator?.start()
+    }
+
+    private fun createScaleViewAnimator(view: View, scale: Float): Animator {
+        val scaleDownX = ObjectAnimator.ofFloat(view, View.SCALE_X, scale).apply {
+            duration = SCALE_BUTTON_DURATION
+        }
+        val scaleDownY = ObjectAnimator.ofFloat(view, View.SCALE_Y, scale).apply {
+            duration = SCALE_BUTTON_DURATION
+        }
+
+        return AnimatorSet().apply {
+            play(scaleDownX).with(scaleDownY)
+        }
     }
 
     interface GameFragmentLister {

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
+    android:id="@+id/contentLayout"
     android:orientation="vertical">
 
     <TextView
@@ -39,6 +40,7 @@
     <TextView
         android:id="@+id/thronesView"
         style="@style/AnswerTextView"
+        android:layout_marginStart="8dp"
         android:background="@drawable/bg_answer_left"
         android:text="@string/left_answer_text"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -49,6 +51,7 @@
     <TextView
         android:id="@+id/ringsView"
         style="@style/AnswerTextView"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/bg_answer_right"
         android:text="@string/right_answer_text"
         app:layout_constraintBottom_toBottomOf="parent"
