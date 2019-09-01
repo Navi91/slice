@@ -33,6 +33,17 @@ class GameFragment : SlideFragment(), IGameView {
         return inflater.inflate(R.layout.f_game, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        thronesView.setOnClickListener {
+            presenter.onThronesSelected()
+        }
+        ringsView.setOnClickListener {
+            presenter.onRingsSelected()
+        }
+    }
+
     override fun showLoadGameError() {
         log("show load game error")
 

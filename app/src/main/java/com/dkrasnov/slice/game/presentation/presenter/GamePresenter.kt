@@ -23,7 +23,7 @@ class GamePresenter : SlidePresenter<IGameView>() {
     lateinit var gameInteractor: IGameInteractor
 
     private val actors = mutableListOf<Actor>()
-    private var currentActorIndex = FIRST_ACTOR_INDEX
+    private var nextActorIndex = FIRST_ACTOR_INDEX
     
     init {
         ComponentHolder.applicationComponent().inject(this)
@@ -49,8 +49,13 @@ class GamePresenter : SlidePresenter<IGameView>() {
             }).untilDestroy()
     }
 
-    fun selectSerial(serial: Serial) {
-        gameInteractor.selectSerialForActor(actors[currentActorIndex], serial)
+    fun onThronesSelected() {
+        gameInteractor.selectSerialForActor(actors[getCurrentActorIndex()], Serial.GAME_OF_THRONES)
+        showNextActorOrEndGame()
+    }
+
+    fun onRingsSelected() {
+        gameInteractor.selectSerialForActor(actors[getCurrentActorIndex()], Serial.THE_LORD_OF_RINGS)
         showNextActorOrEndGame()
     }
 
@@ -60,13 +65,13 @@ class GamePresenter : SlidePresenter<IGameView>() {
             addAll(actors)
         }
 
-        currentActorIndex = FIRST_ACTOR_INDEX
+        nextActorIndex = FIRST_ACTOR_INDEX
     }
     
     private fun showNextActorOrEndGame() {
-        if (currentActorIndex < actors.size) {
-            viewState.showActor(actors[currentActorIndex])
-            currentActorIndex++
+        if (nextActorIndex < actors.size) {
+            viewState.showActor(actors[nextActorIndex])
+            nextActorIndex++
         } else {
             endGame()
         }
@@ -75,4 +80,6 @@ class GamePresenter : SlidePresenter<IGameView>() {
     private fun endGame() {
         viewState.showGameResults()
     }
+
+    private fun getCurrentActorIndex() = nextActorIndex - 1
 }
