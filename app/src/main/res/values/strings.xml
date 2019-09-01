@@ -7,4 +7,7 @@
     <string name="the_lord_of_rings">Властелин колец</string>
     <string name="left_answer_text">Игра\nпрестолов</string>
     <string name="right_answer_text">Властелин\nколец</string>
+    <string name="your_result">Ваш результат</string>
+    <string name="error_load_game_results">Не удалось загрузить результаты игры</string>
+    <string name="try_on_more">Попробовать еще раз</string>
 </resources>

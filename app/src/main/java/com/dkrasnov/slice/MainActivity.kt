@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.dkrasnov.slice.base.SlideActivity
 import com.dkrasnov.slice.game.presentation.fragment.GameFragment
-import com.dkrasnov.slice.game.presentation.fragment.GameResultFragment
+import com.dkrasnov.slice.game.presentation.fragment.GameResultsFragment
 
 class MainActivity : SlideActivity(), GameFragment.GameFragmentLister {
 
@@ -26,6 +26,6 @@ class MainActivity : SlideActivity(), GameFragment.GameFragmentLister {
     }
 
     override fun onRequestGameResults() {
-        replaceFragment(R.id.containerLayout, GameResultFragment.newInstance())
+        replaceFragment(R.id.containerLayout, GameResultsFragment.newInstance())
     }
 }

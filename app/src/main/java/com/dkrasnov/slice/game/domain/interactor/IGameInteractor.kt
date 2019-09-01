@@ -11,5 +11,5 @@ interface IGameInteractor {
 
     fun selectSerialForActor(actor: Actor, selectedSerial: Serial)
 
-    fun getGameResult(): List<PlayerChoice>
+    fun getGameResult(): Single<List<PlayerChoice>>
 }

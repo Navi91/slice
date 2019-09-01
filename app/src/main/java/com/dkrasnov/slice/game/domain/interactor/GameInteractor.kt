@@ -28,7 +28,9 @@ class GameInteractor @Inject constructor(
         gameResultList.add(PlayerChoice(actor, selectedSerial))
     }
 
-    override fun getGameResult(): List<PlayerChoice> = gameResultList
+    override fun getGameResult(): Single<List<PlayerChoice>> {
+        return Single.just(gameResultList)
+    }
 
     private fun clearPreviousGame() {
         gameResultList.clear()
