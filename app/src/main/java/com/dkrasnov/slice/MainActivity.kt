@@ -27,8 +27,8 @@ class MainActivity : SlideActivity(), GameFragment.GameFragmentLister, GameResul
         }
     }
 
-    override fun onRequestGameResults() {
-        replaceFragment(R.id.containerLayout, GameResultsFragment.newInstance())
+    override fun onRequestGameResults(ratio: Float) {
+        replaceFragment(R.id.containerLayout, GameResultsFragment.newInstance(ratio))
     }
 
     override fun onRequestGame() {

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="player_choice_left_edge_padding">16dp</dimen>
+    <dimen name="player_choice_left_padding">4dp</dimen>
+    <dimen name="player_choice_right_edge_padding">16dp</dimen>
+    <dimen name="player_choice_right_padding">4dp</dimen>
+    <dimen name="player_choice_top_padding">4dp</dimen>
+    <dimen name="player_choice_bottom_padding">4dp</dimen>
+</resources>

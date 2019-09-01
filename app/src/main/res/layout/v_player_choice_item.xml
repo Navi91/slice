@@ -11,19 +11,19 @@
         android:id="@+id/actorImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="center" />
+        android:scaleType="centerCrop" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="8dp"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/resultButton"
-            style="@style/AppTextView.18.White"
+            style="@style/AppTextView.14.White"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="false"
@@ -33,15 +33,14 @@
 
         <TextView
             android:id="@+id/actorNameTextView"
-            style="@style/AppTextView.18.White"
+            style="@style/AppTextView.14.White"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             tools:text="Джон Сноу" />
 
         <TextView
             android:id="@+id/selectedSerialTextView"
-            style="@style/AppTextView.18"
+            style="@style/AppTextView.14"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/selectedSerialTextColor"
@@ -49,7 +48,7 @@
 
         <TextView
             android:id="@+id/rightSerialTextView"
-            style="@style/AppTextView.18"
+            style="@style/AppTextView.14"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/rightSerialTextColor"

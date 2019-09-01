@@ -64,7 +64,10 @@ class GameFragment : SlideFragment(), IGameView {
     }
 
     override fun showGameResults() {
-        listener?.onRequestGameResults()
+        val  height = actorImageView.measuredHeight.toFloat()
+        val  width = actorImageView.measuredWidth.toFloat()
+
+        listener?.onRequestGameResults(height / width)
     }
 
     override fun setProgress(progress: Boolean) {
@@ -80,6 +83,6 @@ class GameFragment : SlideFragment(), IGameView {
     }
 
     interface GameFragmentLister {
-        fun onRequestGameResults()
+        fun onRequestGameResults(ratio: Float)
     }
 }

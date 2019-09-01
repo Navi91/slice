@@ -32,8 +32,12 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <style name="AppTextView.14">
+        <item name="android:textSize">14sp</item>
+    </style>
+
     <style name="AppTextView.16">
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="AppTextView.18">
@@ -46,6 +50,14 @@
 
     <style name="AppTextView.18.Secondary">
         <item name="android:textColor">@color/secondaryTextColor</item>
+    </style>
+
+    <style name="AppTextView.14.White">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="AppTextView.16.White">
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
     <style name="AppTextView.18.White">

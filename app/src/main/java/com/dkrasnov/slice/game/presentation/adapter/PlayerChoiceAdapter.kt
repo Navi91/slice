@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
 import com.dkrasnov.slice.R
@@ -14,18 +15,32 @@ import com.dkrasnov.slice.game.domain.model.PlayerChoice
 import com.dkrasnov.slice.glide.GlideApp
 import kotlinx.android.synthetic.main.v_player_choice_item.view.*
 
-class PlayerChoiceAdapter : RecyclerView.Adapter<PlayerChoiceAdapter.PlayerChoiceViewHolder>() {
+class PlayerChoiceAdapter(
+    private val imageRatio: Float
+) : RecyclerView.Adapter<PlayerChoiceAdapter.PlayerChoiceViewHolder>() {
 
     private val items = mutableListOf<PlayerChoice>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayerChoiceViewHolder {
-        return PlayerChoiceViewHolder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.v_player_choice_item,
-                parent,
-                false
-            )
+        val context = parent.context
+        val resources = context.resources
+
+        val view = LayoutInflater.from(context).inflate(
+            R.layout.v_player_choice_item, parent, false
         )
+
+        val params = view.layoutParams as GridLayoutManager.LayoutParams
+
+        val paddings = resources.getDimensionPixelSize(R.dimen.player_choice_left_edge_padding) +
+                resources.getDimensionPixelSize(R.dimen.player_choice_left_padding) +
+                resources.getDimensionPixelSize(R.dimen.player_choice_right_edge_padding) +
+                resources.getDimensionPixelSize(R.dimen.player_choice_right_padding)
+
+        val height = ((parent.measuredWidth - paddings) / 2) * imageRatio
+
+        params.height = height.toInt()
+
+        return PlayerChoiceViewHolder(view)
     }
 
     override fun getItemCount(): Int = items.size
@@ -45,7 +60,8 @@ class PlayerChoiceAdapter : RecyclerView.Adapter<PlayerChoiceAdapter.PlayerChoic
 
         fun bind(item: PlayerChoice) {
             with(itemView) {
-                GlideApp.with(actorImageView).load(item.getAssetUri()).downsample(DownsampleStrategy.AT_LEAST).into(actorImageView)
+                GlideApp.with(actorImageView).load(item.getAssetUri()).downsample(DownsampleStrategy.AT_LEAST)
+                    .into(actorImageView)
 
                 if (item.isRight()) {
                     resultButton.setText(R.string.right)

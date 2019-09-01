@@ -1,6 +1,7 @@
 package com.dkrasnov.slice.game.presentation.fragment
 
 import android.annotation.SuppressLint
+import android.graphics.Rect
 import android.os.Bundle
 import android.transition.TransitionManager
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.dkrasnov.slice.R
 import com.dkrasnov.slice.base.SlideFragment
@@ -25,11 +27,24 @@ class GameResultsFragment : SlideFragment(), IGameResultsView {
     lateinit var presenter: GameResultsPresenter
 
     private var playerChoiceAdapter: PlayerChoiceAdapter? = null
+    private var imageRatio: Float = 0f
     private var listener: GameResultsFragmentListener? = null
 
     companion object {
 
-        fun newInstance() = GameResultsFragment()
+        private const val IMAGE_RATIO_BUNDLE = "image_ratio_bundle"
+
+        fun newInstance(ratio: Float) = GameResultsFragment().apply {
+            arguments = Bundle().apply {
+                putFloat(IMAGE_RATIO_BUNDLE, ratio)
+            }
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        imageRatio = arguments?.getFloat(IMAGE_RATIO_BUNDLE) ?: 0f
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -44,11 +59,12 @@ class GameResultsFragment : SlideFragment(), IGameResultsView {
         }
 
         if (playerChoiceAdapter == null) {
-            playerChoiceAdapter = PlayerChoiceAdapter()
+            playerChoiceAdapter = PlayerChoiceAdapter(imageRatio)
 
             recyclerView.apply {
                 adapter = playerChoiceAdapter
                 layoutManager = GridLayoutManager(context, 2)
+                addItemDecoration(createItemDecoration())
             }
         }
     }
@@ -81,6 +97,33 @@ class GameResultsFragment : SlideFragment(), IGameResultsView {
 
     fun setListener(listener: GameResultsFragmentListener) {
         this.listener = listener
+    }
+
+    private fun createItemDecoration(): RecyclerView.ItemDecoration {
+        return object : RecyclerView.ItemDecoration() {
+
+            override fun getItemOffsets(
+                outRect: Rect,
+                view: View,
+                parent: RecyclerView,
+                state: RecyclerView.State
+            ) {
+                super.getItemOffsets(outRect, view, parent, state)
+
+                val position = parent.getChildAdapterPosition(view)
+
+                if (position % 2 == 0) {
+                    outRect.left = resources.getDimensionPixelSize(R.dimen.player_choice_left_edge_padding)
+                    outRect.right = resources.getDimensionPixelSize(R.dimen.player_choice_right_padding)
+                } else {
+                    outRect.left = resources.getDimensionPixelSize(R.dimen.player_choice_left_padding)
+                    outRect.right = resources.getDimensionPixelSize(R.dimen.player_choice_right_edge_padding)
+                }
+
+                outRect.top = resources.getDimensionPixelSize(R.dimen.player_choice_top_padding)
+                outRect.bottom = resources.getDimensionPixelSize(R.dimen.player_choice_bottom_padding)
+            }
+        }
     }
 
     interface GameResultsFragmentListener {
