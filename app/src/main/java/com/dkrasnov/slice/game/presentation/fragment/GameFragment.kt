@@ -14,6 +14,7 @@ import com.dkrasnov.slice.extensions.log
 import com.dkrasnov.slice.extensions.setVisible
 import com.dkrasnov.slice.game.presentation.presenter.GamePresenter
 import com.dkrasnov.slice.game.presentation.view.IGameView
+import com.dkrasnov.slice.glide.GlideApp
 import kotlinx.android.synthetic.main.f_game.*
 
 class GameFragment : SlideFragment(), IGameView {
@@ -25,6 +26,8 @@ class GameFragment : SlideFragment(), IGameView {
 
     @InjectPresenter
     lateinit var presenter: GamePresenter
+
+    private var listener: GameFragmentLister? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.f_game, container, false)
@@ -38,12 +41,18 @@ class GameFragment : SlideFragment(), IGameView {
 
     override fun showActor(actor: Actor) {
         log("show actor $actor")
+
+        GlideApp.with(this).load(actor.getAssetUri()).into(actorImageView)
     }
 
-    override fun showGameOveraly() {
+    override fun showGameOverlay() {
         TransitionManager.beginDelayedTransition(view as ViewGroup)
 
         gameOverlayGroup.setVisible(true)
+    }
+
+    override fun showGameResults() {
+        listener?.onRequestGameResults()
     }
 
     override fun setProgress(progress: Boolean) {
@@ -52,5 +61,13 @@ class GameFragment : SlideFragment(), IGameView {
         TransitionManager.beginDelayedTransition(view as ViewGroup)
 
         progressBar.setVisible(progress)
+    }
+
+    fun setListener(listener: GameFragmentLister) {
+        this.listener = listener
+    }
+
+    interface GameFragmentLister {
+        fun onRequestGameResults()
     }
 }

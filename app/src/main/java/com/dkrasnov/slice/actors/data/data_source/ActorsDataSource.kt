@@ -3,6 +3,7 @@ package com.dkrasnov.slice.actors.data.data_source
 import android.content.Context
 import com.dkrasnov.slice.actors.data.model.Actor
 import com.dkrasnov.slice.actors.data.model.GameInfo
+import com.dkrasnov.slice.actors.data.model.Serial
 import com.google.gson.Gson
 import io.reactivex.Single
 import java.nio.charset.Charset
@@ -16,6 +17,9 @@ class ActorsDataSource @Inject constructor(
     companion object {
 
         private const val GAME_JSON_NAME = "game.json"
+
+        private const val GAME_OF_THRONES_SERIAL_NAME = "Игра Престолов"
+        private const val THE_LORD_OF_RINGS_NAME = "Властелин Колец"
     }
 
     override fun getActors(): Single<List<Actor>> {
@@ -25,7 +29,7 @@ class ActorsDataSource @Inject constructor(
 
             val actors = gameInfo.gameSerials.flatMap { gameSerial ->
                 gameSerial.actors.map { gameActor ->
-                    Actor.createFrom(gameActor, gameSerial.serial)
+                    Actor.createFrom(gameActor, getSerialFromName(gameSerial.serial))
                 }
             }
 
@@ -46,5 +50,13 @@ class ActorsDataSource @Inject constructor(
         }
 
         return json
+    }
+
+    private fun getSerialFromName(name: String): Serial {
+        return when (name) {
+            GAME_OF_THRONES_SERIAL_NAME -> Serial.GAME_OF_THRONES
+            THE_LORD_OF_RINGS_NAME -> Serial.THE_LORD_OF_RINGS
+            else -> throw IllegalArgumentException("Unknown serial name $name")
+        }
     }
 }

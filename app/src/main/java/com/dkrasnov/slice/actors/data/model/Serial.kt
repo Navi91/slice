@@ -1,3 +1,5 @@
 package com.dkrasnov.slice.actors.data.model
 
-data class Serial(val name: String)
+enum class Serial {
+    GAME_OF_THRONES, THE_LORD_OF_RINGS
+}
