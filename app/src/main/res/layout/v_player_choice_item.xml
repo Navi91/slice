@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="320dp"
+    android:orientation="vertical"
+    app:cardCornerRadius="16dp">
+
+    <ImageView
+        android:id="@+id/actorImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="center" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="16dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/resultButton"
+            style="@style/AppTextView.18.White"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:textAllCaps="false"
+            app:cornerRadius="16dp"
+            tools:text="Верно" />
+
+        <TextView
+            android:id="@+id/actorNameTextView"
+            style="@style/AppTextView.18.White"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            tools:text="Джон Сноу" />
+
+        <TextView
+            android:id="@+id/selectedSerialTextView"
+            style="@style/AppTextView.18"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/selectedSerialTextColor"
+            tools:text="Властелин колец" />
+
+        <TextView
+            android:id="@+id/rightSerialTextView"
+            style="@style/AppTextView.18"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/rightSerialTextColor"
+            tools:text="Игра престолов" />
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

@@ -13,7 +13,7 @@ class MainActivity : SlideActivity(), GameFragment.GameFragmentLister, GameResul
         setContentView(R.layout.a_main)
 
         if (supportFragmentManager.findFragmentById(R.id.containerLayout) == null) {
-            replaceFragment(R.id.containerLayout, GameFragment.newInstance())
+            showGameFragment()
         }
     }
 
@@ -32,6 +32,10 @@ class MainActivity : SlideActivity(), GameFragment.GameFragmentLister, GameResul
     }
 
     override fun onRequestGame() {
+        showGameFragment()
+    }
+
+    private fun showGameFragment() {
         replaceFragment(R.id.containerLayout, GameFragment.newInstance())
     }
 }

@@ -48,6 +48,10 @@
         <item name="android:textColor">@color/secondaryTextColor</item>
     </style>
 
+    <style name="AppTextView.18.White">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
     <style name="AppTextView.16.Secondary.Center">
         <item name="android:gravity">center</item>
     </style>

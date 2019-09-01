@@ -7,11 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.recyclerview.widget.GridLayoutManager
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.dkrasnov.slice.R
 import com.dkrasnov.slice.base.SlideFragment
 import com.dkrasnov.slice.extensions.setVisible
 import com.dkrasnov.slice.game.domain.model.PlayerChoice
+import com.dkrasnov.slice.game.presentation.adapter.PlayerChoiceAdapter
 import com.dkrasnov.slice.game.presentation.presenter.GameResultsPresenter
 import com.dkrasnov.slice.game.presentation.view.IGameResultsView
 import kotlinx.android.synthetic.main.f_game.progressBar
@@ -22,6 +24,7 @@ class GameResultsFragment : SlideFragment(), IGameResultsView {
     @InjectPresenter
     lateinit var presenter: GameResultsPresenter
 
+    private var playerChoiceAdapter: PlayerChoiceAdapter? = null
     private var listener: GameResultsFragmentListener? = null
 
     companion object {
@@ -39,6 +42,15 @@ class GameResultsFragment : SlideFragment(), IGameResultsView {
         playAgainButton.setOnClickListener {
             presenter.onPlayAgain()
         }
+
+        if (playerChoiceAdapter == null) {
+            playerChoiceAdapter = PlayerChoiceAdapter()
+
+            recyclerView.apply {
+                adapter = playerChoiceAdapter
+                layoutManager = GridLayoutManager(context, 2)
+            }
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -47,7 +59,10 @@ class GameResultsFragment : SlideFragment(), IGameResultsView {
     }
 
     override fun setPlayerChoiceList(playerChoiceList: List<PlayerChoice>) {
-
+        playerChoiceAdapter?.run {
+            setItems(playerChoiceList)
+            notifyDataSetChanged()
+        }
     }
 
     override fun setProgress(progress: Boolean) {

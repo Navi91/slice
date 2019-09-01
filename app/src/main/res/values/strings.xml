@@ -10,4 +10,7 @@
     <string name="your_result">Ваш результат</string>
     <string name="error_load_game_results">Не удалось загрузить результаты игры</string>
     <string name="try_on_more">Попробовать еще раз</string>
+    <string name="right">Верно</string>
+    <string name="wrong">Неверно</string>
+    <string name="unknown_serial">Неизвестный сериал</string>
 </resources>

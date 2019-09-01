@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.arellomobile.mvp.presenter.InjectPresenter
+import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
 import com.dkrasnov.slice.R
 import com.dkrasnov.slice.actors.data.model.Actor
 import com.dkrasnov.slice.base.SlideFragment
@@ -53,7 +54,7 @@ class GameFragment : SlideFragment(), IGameView {
     override fun showActor(actor: Actor) {
         log("show actor $actor")
 
-        GlideApp.with(this).load(actor.getAssetUri()).into(actorImageView)
+        GlideApp.with(this).load(actor.getAssetUri()).downsample(DownsampleStrategy.AT_LEAST).into(actorImageView)
     }
 
     override fun showGameOverlay() {

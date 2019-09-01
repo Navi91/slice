@@ -5,4 +5,8 @@
     <color name="colorAccent">#2196f3</color>
     <color name="primaryTextColor">#DE000000</color>
     <color name="secondaryTextColor">#8A000000</color>
+    <color name="selectedSerialTextColor">#80FFFFFF</color>
+    <color name="rightSerialTextColor">#B3FFFFFF</color>
+    <color name="rightAnswerBackgroundColor">#66bb6a</color>
+    <color name="wrongAnswerBackgroundColor">#ef5350</color>
 </resources>
