@@ -6,7 +6,7 @@ import com.dkrasnov.slice.base.SlideActivity
 import com.dkrasnov.slice.game.presentation.fragment.GameFragment
 import com.dkrasnov.slice.game.presentation.fragment.GameResultsFragment
 
-class MainActivity : SlideActivity(), GameFragment.GameFragmentLister {
+class MainActivity : SlideActivity(), GameFragment.GameFragmentLister, GameResultsFragment.GameResultsFragmentListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,10 +22,16 @@ class MainActivity : SlideActivity(), GameFragment.GameFragmentLister {
 
         if (fragment is GameFragment) {
             fragment.setListener(this)
+        } else if (fragment is GameResultsFragment) {
+            fragment.setListener(this)
         }
     }
 
     override fun onRequestGameResults() {
         replaceFragment(R.id.containerLayout, GameResultsFragment.newInstance())
+    }
+
+    override fun onRequestGame() {
+        replaceFragment(R.id.containerLayout, GameFragment.newInstance())
     }
 }

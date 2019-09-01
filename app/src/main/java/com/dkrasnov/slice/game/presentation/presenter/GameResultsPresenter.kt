@@ -41,7 +41,7 @@ class GameResultsPresenter : SlidePresenter<IGameResultsView>() {
             }).untilDestroy()
     }
 
-    fun onGameAgain() {
+    fun onPlayAgain() {
         viewState.showGame()
     }
 }

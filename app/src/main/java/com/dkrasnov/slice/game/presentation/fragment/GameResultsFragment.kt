@@ -33,6 +33,14 @@ class GameResultsFragment : SlideFragment(), IGameResultsView {
         return inflater.inflate(R.layout.f_game_results, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        playAgainButton.setOnClickListener {
+            presenter.onPlayAgain()
+        }
+    }
+
     @SuppressLint("SetTextI18n")
     override fun setRightAnswersCount(rightAnswerCount: Int, allAnswerCount: Int) {
         answersTextView.text = "$rightAnswerCount / $allAnswerCount"
@@ -53,7 +61,7 @@ class GameResultsFragment : SlideFragment(), IGameResultsView {
     }
 
     override fun showGame() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        listener?.onRequestGame()
     }
 
     fun setListener(listener: GameResultsFragmentListener) {
