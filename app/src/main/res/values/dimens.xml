@@ -6,4 +6,17 @@
     <dimen name="player_choice_right_padding">4dp</dimen>
     <dimen name="player_choice_top_padding">4dp</dimen>
     <dimen name="player_choice_bottom_padding">4dp</dimen>
+    <dimen name="actor_view_margin">24dp</dimen>
+    <dimen name="actor_view_corner_radius">16dp</dimen>
+    <dimen name="player_choice_view_corner_radius">16dp</dimen>
+    <dimen name="actor_view_elevation">0dp</dimen>
+    <dimen name="task_text_view_height">56dp</dimen>
+    <dimen name="progress_bar_size">56dp</dimen>
+    <dimen name="result_button_corner_radius">16dp</dimen>
+
+    <dimen name="margin_8">8dp</dimen>
+    <dimen name="margin_16">16dp</dimen>
+
+    <dimen name="padding_16">16dp</dimen>
+
 </resources>

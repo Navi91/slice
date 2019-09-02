@@ -21,7 +21,6 @@ import com.dkrasnov.slice.actors.data.model.Actor
 import com.dkrasnov.slice.base.SlideFragment
 import com.dkrasnov.slice.extensions.log
 import com.dkrasnov.slice.extensions.setVisible
-import com.dkrasnov.slice.extensions.toPx
 import com.dkrasnov.slice.game.presentation.presenter.GamePresenter
 import com.dkrasnov.slice.game.presentation.view.IGameView
 import com.dkrasnov.slice.glide.GlideApp
@@ -124,8 +123,8 @@ class GameFragment : SlideFragment(), IGameView {
         }
 
         view.layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, 0).apply {
-            marginStart = requireContext().toPx(24f)
-            marginEnd = requireContext().toPx(24f)
+            marginStart = resources.getDimensionPixelSize(R.dimen.actor_view_margin)
+            marginEnd = resources.getDimensionPixelSize(R.dimen.actor_view_margin)
         }
 
         if (view == nextActorView) {
@@ -144,8 +143,20 @@ class GameFragment : SlideFragment(), IGameView {
     private fun constraitActorImage(@IdRes id: Int) {
         val set = ConstraintSet()
         set.clone(contentLayout)
-        set.connect(id, ConstraintSet.TOP, taskTextView.id, ConstraintSet.BOTTOM, requireContext().toPx(24f))
-        set.connect(id, ConstraintSet.BOTTOM, ringsButtonView.id, ConstraintSet.TOP, requireContext().toPx(24f))
+        set.connect(
+            id,
+            ConstraintSet.TOP,
+            taskTextView.id,
+            ConstraintSet.BOTTOM,
+            resources.getDimensionPixelSize(R.dimen.actor_view_margin)
+        )
+        set.connect(
+            id,
+            ConstraintSet.BOTTOM,
+            ringsButtonView.id,
+            ConstraintSet.TOP,
+            resources.getDimensionPixelSize(R.dimen.actor_view_margin)
+        )
 
         set.applyTo(contentLayout)
     }

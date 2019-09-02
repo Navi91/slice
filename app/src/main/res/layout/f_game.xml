@@ -2,10 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/contentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:id="@+id/contentLayout"
     android:orientation="vertical">
 
     <TextView
@@ -13,34 +13,25 @@
         style="@style/AppTextView.16.Secondary.Center.AllCaps"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/margin_16"
         android:text="@string/task"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/taskTextView"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="@dimen/task_text_view_height"
         android:gravity="center"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
+        android:paddingLeft="@dimen/padding_16"
+        android:paddingRight="@dimen/padding_16"
         android:text="@string/game_task"
         app:autoSizeTextType="uniform"
         app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
 
-    <!--<ImageView
-        android:id="@+id/actorImageView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="24dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintBottom_toTopOf="@+id/ringsView"
-        app:layout_constraintTop_toBottomOf="@+id/taskTextView" />-->
-
     <TextView
         android:id="@+id/thronesButtonView"
         style="@style/AnswerTextView"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="@dimen/margin_8"
         android:background="@drawable/bg_answer_left"
         android:text="@string/left_answer_text"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -51,7 +42,7 @@
     <TextView
         android:id="@+id/ringsButtonView"
         style="@style/AnswerTextView"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="@dimen/margin_8"
         android:background="@drawable/bg_answer_right"
         android:text="@string/right_answer_text"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -63,14 +54,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:constraint_referenced_ids="titleTextView, taskTextView, thronesView, ringsView"
+        app:constraint_referenced_ids="titleTextView, taskTextView, thronesButtonView, ringsButtonView"
         tools:visibility="visible" />
 
     <ProgressBar
         android:id="@+id/progressBar"
         style="@style/Widget.AppCompat.ProgressBar"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
+        android:layout_width="@dimen/progress_bar_size"
+        android:layout_height="@dimen/progress_bar_size"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
