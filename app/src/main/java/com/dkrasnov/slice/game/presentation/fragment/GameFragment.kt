@@ -134,14 +134,14 @@ class GameFragment : SlideFragment(), IGameView {
             contentLayout.addView(view)
         }
 
-        constaitActorImage(view.id)
+        constraitActorImage(view.id)
 
         GlideApp.with(this).load(actor.getAssetUri()).downsample(DownsampleStrategy.AT_LEAST).into(view.actorImageView)
 
         updateActorViewRatio()
     }
 
-    private fun constaitActorImage(@IdRes id: Int) {
+    private fun constraitActorImage(@IdRes id: Int) {
         val set = ConstraintSet()
         set.clone(contentLayout)
         set.connect(id, ConstraintSet.TOP, taskTextView.id, ConstraintSet.BOTTOM, requireContext().toPx(24f))

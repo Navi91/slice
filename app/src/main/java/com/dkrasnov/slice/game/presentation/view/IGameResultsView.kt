@@ -23,4 +23,7 @@ interface IGameResultsView : SlideView {
 
     @StateStrategyType(SingleStateStrategy::class)
     fun showGame()
+
+    @StateStrategyType(AddToEndSingleStrategy::class)
+    fun setPlayAgainEnabled(enabled: Boolean)
 }

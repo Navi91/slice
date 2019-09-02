@@ -95,6 +95,10 @@ class GameResultsFragment : SlideFragment(), IGameResultsView {
         listener?.onRequestGame()
     }
 
+    override fun setPlayAgainEnabled(enabled: Boolean) {
+        playAgainButton.isEnabled = enabled
+    }
+
     fun setListener(listener: GameResultsFragmentListener) {
         this.listener = listener
     }

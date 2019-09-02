@@ -26,8 +26,14 @@ class GameResultsPresenter : SlidePresenter<IGameResultsView>() {
         gameInteractor.getGameResult()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { viewState.setProgress(true) }
-            .doAfterTerminate { viewState.setProgress(false) }
+            .doOnSubscribe {
+                viewState.setProgress(true)
+                viewState.setPlayAgainEnabled(false)
+            }
+            .doAfterTerminate {
+                viewState.setProgress(false)
+                viewState.setPlayAgainEnabled(true)
+            }
             .subscribe({ playerChoiceList ->
                 val rightAnswerCount = playerChoiceList.count { it.isRight() }
                 val allAnswerCount = playerChoiceList.size
