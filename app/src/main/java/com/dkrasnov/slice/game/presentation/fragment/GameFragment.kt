@@ -1,6 +1,7 @@
 package com.dkrasnov.slice.game.presentation.fragment
 
 import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.os.Bundle
@@ -32,6 +33,12 @@ class GameFragment : SlideFragment(), IGameView {
     companion object {
 
         private const val SCALE_BUTTON_DURATION = 250L
+        private const val BUTTON_UP_SCALE = 1.1f
+        private const val BUTTON_DOWN_SCALE = 0.9f
+        private const val BUTTON_NORMAL_SCALE = 1f
+        private const val ACTOR_VIEW_REMOVE_DURATION = 350L
+        private const val ACTORE_VIEW_REMOVE_ROTATION = 20f
+        private const val ACTORE_VIEW_DRAG_ROTATION = 5f
 
         fun newInstance() = GameFragment()
     }
@@ -50,16 +57,28 @@ class GameFragment : SlideFragment(), IGameView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        thronesView.setOnClickListener {
-            removeCurrentActorView()
-            presenter.onThronesSelected()
+        thronesButtonView.setOnClickListener {
+            setButtonEnabled(false)
+
+            thronesAnimateActorViewRemove {
+                setButtonEnabled(true)
+
+                removeCurrentActorView()
+                presenter.onThronesSelected()
+            }
         }
-        ringsView.setOnClickListener {
-            removeCurrentActorView()
-            presenter.onRingsSelected()
+        ringsButtonView.setOnClickListener {
+            setButtonEnabled(false)
+
+            ringsAnimateActorViewRemove {
+                setButtonEnabled(true)
+
+                removeCurrentActorView()
+                presenter.onRingsSelected()
+            }
         }
 
-        thronesView.setOnTouchListener { _, event ->
+        thronesButtonView.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
                 log("throne down")
                 scaleUpThronesView()
@@ -70,7 +89,7 @@ class GameFragment : SlideFragment(), IGameView {
 
             return@setOnTouchListener false
         }
-        ringsView.setOnTouchListener { _, event ->
+        ringsButtonView.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
                 log("ring down")
                 scaleUpRingsView()
@@ -125,8 +144,8 @@ class GameFragment : SlideFragment(), IGameView {
     private fun constaitActorImage(@IdRes id: Int) {
         val set = ConstraintSet()
         set.clone(contentLayout)
-        set.connect(id, ConstraintSet.TOP, taskTextView.id, ConstraintSet.BOTTOM, 24)
-        set.connect(id, ConstraintSet.BOTTOM, ringsView.id, ConstraintSet.TOP, 24)
+        set.connect(id, ConstraintSet.TOP, taskTextView.id, ConstraintSet.BOTTOM, requireContext().toPx(24f))
+        set.connect(id, ConstraintSet.BOTTOM, ringsButtonView.id, ConstraintSet.TOP, requireContext().toPx(24f))
 
         set.applyTo(contentLayout)
     }
@@ -161,24 +180,101 @@ class GameFragment : SlideFragment(), IGameView {
         this.listener = listener
     }
 
+    private fun ringsAnimateActorViewRemove(callback: () -> Unit) {
+        animateActorViewRemove(
+            ACTORE_VIEW_REMOVE_ROTATION,
+            contentLayout.width.toFloat(),
+            0f,
+            currentActorView?.height?.toFloat() ?: 0f,
+            callback
+        )
+    }
+
+    private fun thronesAnimateActorViewRemove(callback: () -> Unit) {
+        animateActorViewRemove(
+            -ACTORE_VIEW_REMOVE_ROTATION,
+            -contentLayout.width.toFloat(),
+            currentActorView?.width?.toFloat() ?: 0f,
+            currentActorView?.height?.toFloat() ?: 0f,
+            callback
+        )
+    }
+
+    private fun animateActorViewRemove(
+        rotation: Float,
+        translationX: Float,
+        privotX: Float,
+        pivotY: Float,
+        callback: () -> Unit
+    ) {
+        currentActorView?.let { view ->
+            view.pivotX = privotX
+            view.pivotY = pivotY
+
+            val rotationAnimator = ObjectAnimator.ofFloat(view, View.ROTATION, rotation)
+            val translationAnimator = ObjectAnimator.ofFloat(view, View.TRANSLATION_X, translationX)
+
+            AnimatorSet().apply {
+                play(translationAnimator).with(rotationAnimator)
+                duration = ACTOR_VIEW_REMOVE_DURATION
+                addListener(object : AnimatorListenerAdapter() {
+
+                    override fun onAnimationEnd(animation: Animator?) {
+                        callback()
+                    }
+                })
+            }.start()
+        }
+    }
+
     private fun scaleUpThronesView() {
-        updateViewScales(1.1f, 0.9f)
+        updateViewScales(BUTTON_UP_SCALE, BUTTON_DOWN_SCALE)
+        animateActorViewDrag(
+            -ACTORE_VIEW_DRAG_ROTATION,
+            currentActorView?.width?.toFloat() ?: 0f,
+            currentActorView?.height?.toFloat() ?: 0f
+        )
     }
 
     private fun scaleUpRingsView() {
-        updateViewScales(0.9f, 1.1f)
+        updateViewScales(BUTTON_DOWN_SCALE, BUTTON_UP_SCALE)
+        animateActorViewDrag(
+            ACTORE_VIEW_DRAG_ROTATION,
+            0f,
+            currentActorView?.height?.toFloat() ?: 0f
+        )
     }
 
     private fun normalizeScale() {
-        updateViewScales(1f, 1f)
+        updateViewScales(BUTTON_NORMAL_SCALE, BUTTON_NORMAL_SCALE)
+        animateActorViewDrag(
+            0f,
+            currentActorView?.pivotX ?: 0f,
+            currentActorView?.pivotY ?: 0f
+        )
+    }
+
+    private var actorDragAnimator: Animator? = null
+
+    private fun animateActorViewDrag(rotation: Float, pivotX: Float, pivotY: Float) {
+        currentActorView?.let { view ->
+            view.pivotX = pivotX
+            view.pivotY = pivotY
+
+            actorDragAnimator?.cancel()
+            actorDragAnimator = ObjectAnimator.ofFloat(view, View.ROTATION, rotation).apply {
+                duration = SCALE_BUTTON_DURATION
+            }
+            actorDragAnimator?.start()
+        }
     }
 
     private fun updateViewScales(thronesScale: Float, ringsScale: Float) {
         currentAnimator?.cancel()
         currentAnimator = AnimatorSet().apply {
-            play(createScaleViewAnimator(thronesView, thronesScale)).with(
+            play(createScaleViewAnimator(thronesButtonView, thronesScale)).with(
                 createScaleViewAnimator(
-                    ringsView,
+                    ringsButtonView,
                     ringsScale
                 )
             )
@@ -197,6 +293,11 @@ class GameFragment : SlideFragment(), IGameView {
         return AnimatorSet().apply {
             play(scaleDownX).with(scaleDownY)
         }
+    }
+
+    private fun setButtonEnabled(enabled: Boolean) {
+        thronesButtonView.isEnabled = enabled
+        ringsButtonView.isEnabled = enabled
     }
 
     private fun updateActorViewRatio() {

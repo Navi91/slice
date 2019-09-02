@@ -38,25 +38,25 @@
         app:layout_constraintTop_toBottomOf="@+id/taskTextView" />-->
 
     <TextView
-        android:id="@+id/thronesView"
+        android:id="@+id/thronesButtonView"
         style="@style/AnswerTextView"
         android:layout_marginStart="8dp"
         android:background="@drawable/bg_answer_left"
         android:text="@string/left_answer_text"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/ringsView"
+        app:layout_constraintEnd_toStartOf="@+id/ringsButtonView"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/ringsView"
+        android:id="@+id/ringsButtonView"
         style="@style/AnswerTextView"
         android:layout_marginEnd="8dp"
         android:background="@drawable/bg_answer_right"
         android:text="@string/right_answer_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/thronesView" />
+        app:layout_constraintStart_toEndOf="@+id/thronesButtonView" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/gameOverlayGroup"
