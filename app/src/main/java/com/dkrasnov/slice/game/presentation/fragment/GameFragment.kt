@@ -41,6 +41,7 @@ class GameFragment : SlideFragment(), IGameView {
 
     private var listener: GameFragmentLister? = null
     private var currentAnimator: Animator? = null
+    private var actorViewRatio: Float = 1f
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.f_game, container, false)
@@ -117,6 +118,8 @@ class GameFragment : SlideFragment(), IGameView {
         constaitActorImage(view.id)
 
         GlideApp.with(this).load(actor.getAssetUri()).downsample(DownsampleStrategy.AT_LEAST).into(view.actorImageView)
+
+        updateActorViewRatio()
     }
 
     private fun constaitActorImage(@IdRes id: Int) {
@@ -143,10 +146,7 @@ class GameFragment : SlideFragment(), IGameView {
     }
 
     override fun showGameResults() {
-//        val height = actorImageView.measuredHeight.toFloat()
-//        val width = actorImageView.measuredWidth.toFloat()
-
-        listener?.onRequestGameResults(1.2f)
+        listener?.onRequestGameResults(actorViewRatio)
     }
 
     override fun setProgress(progress: Boolean) {
@@ -196,6 +196,15 @@ class GameFragment : SlideFragment(), IGameView {
 
         return AnimatorSet().apply {
             play(scaleDownX).with(scaleDownY)
+        }
+    }
+
+    private fun updateActorViewRatio() {
+        currentActorView?.let { view ->
+            val height = view.measuredHeight.toFloat()
+            val width = view.measuredWidth.toFloat()
+
+            actorViewRatio = height / width
         }
     }
 
