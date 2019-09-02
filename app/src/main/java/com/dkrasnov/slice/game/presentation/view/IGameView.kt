@@ -10,7 +10,7 @@ interface IGameView: SlideView {
     fun showLoadGameError()
     
     @StateStrategyType(AddToEndSingleStrategy::class)
-    fun showActor(actor: Actor)
+    fun addActor(actor: Actor)
     
     @StateStrategyType(AddToEndSingleStrategy::class)
     fun setProgress(progress: Boolean)

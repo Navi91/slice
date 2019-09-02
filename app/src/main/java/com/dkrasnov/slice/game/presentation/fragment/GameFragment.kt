@@ -4,14 +4,15 @@ import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.os.Bundle
-import android.transition.AutoTransition
-import android.transition.ChangeBounds
 import android.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.IdRes
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
 import com.dkrasnov.slice.R
@@ -19,10 +20,12 @@ import com.dkrasnov.slice.actors.data.model.Actor
 import com.dkrasnov.slice.base.SlideFragment
 import com.dkrasnov.slice.extensions.log
 import com.dkrasnov.slice.extensions.setVisible
+import com.dkrasnov.slice.extensions.toPx
 import com.dkrasnov.slice.game.presentation.presenter.GamePresenter
 import com.dkrasnov.slice.game.presentation.view.IGameView
 import com.dkrasnov.slice.glide.GlideApp
 import kotlinx.android.synthetic.main.f_game.*
+import kotlinx.android.synthetic.main.v_actor_item.view.*
 
 class GameFragment : SlideFragment(), IGameView {
 
@@ -47,9 +50,11 @@ class GameFragment : SlideFragment(), IGameView {
         super.onViewCreated(view, savedInstanceState)
 
         thronesView.setOnClickListener {
+            removeCurrentActorView()
             presenter.onThronesSelected()
         }
         ringsView.setOnClickListener {
+            removeCurrentActorView()
             presenter.onRingsSelected()
         }
 
@@ -83,10 +88,52 @@ class GameFragment : SlideFragment(), IGameView {
         Toast.makeText(context, getString(R.string.error_load_game), Toast.LENGTH_LONG).show()
     }
 
-    override fun showActor(actor: Actor) {
+    private var currentActorView: View? = null
+    private var nextActorView: View? = null
+
+    override fun addActor(actor: Actor) {
         log("show actor $actor")
 
-        GlideApp.with(this).load(actor.getAssetUri()).downsample(DownsampleStrategy.AT_LEAST).into(actorImageView)
+        val view = LayoutInflater.from(context).inflate(R.layout.v_actor_item, contentLayout, false)
+        view.id = View.generateViewId()
+
+        if (currentActorView == null) {
+            currentActorView = view
+        } else {
+            nextActorView = view
+        }
+
+        view.layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, 0).apply {
+            marginStart = requireContext().toPx(24f)
+            marginEnd = requireContext().toPx(24f)
+        }
+
+        if (view == nextActorView) {
+            contentLayout.addView(view, 1)
+        } else {
+            contentLayout.addView(view)
+        }
+
+        constaitActorImage(view.id)
+
+        GlideApp.with(this).load(actor.getAssetUri()).downsample(DownsampleStrategy.AT_LEAST).into(view.actorImageView)
+    }
+
+    private fun constaitActorImage(@IdRes id: Int) {
+        val set = ConstraintSet()
+        set.clone(contentLayout)
+        set.connect(id, ConstraintSet.TOP, taskTextView.id, ConstraintSet.BOTTOM, 24)
+        set.connect(id, ConstraintSet.BOTTOM, ringsView.id, ConstraintSet.TOP, 24)
+
+        set.applyTo(contentLayout)
+    }
+
+    private fun removeCurrentActorView() {
+        currentActorView?.let { view ->
+            contentLayout.removeView(view)
+            currentActorView = nextActorView
+            nextActorView = null
+        }
     }
 
     override fun showGameOverlay() {
@@ -96,10 +143,10 @@ class GameFragment : SlideFragment(), IGameView {
     }
 
     override fun showGameResults() {
-        val height = actorImageView.measuredHeight.toFloat()
-        val width = actorImageView.measuredWidth.toFloat()
+//        val height = actorImageView.measuredHeight.toFloat()
+//        val width = actorImageView.measuredWidth.toFloat()
 
-        listener?.onRequestGameResults(height / width)
+        listener?.onRequestGameResults(1.2f)
     }
 
     override fun setProgress(progress: Boolean) {
@@ -129,7 +176,12 @@ class GameFragment : SlideFragment(), IGameView {
     private fun updateViewScales(thronesScale: Float, ringsScale: Float) {
         currentAnimator?.cancel()
         currentAnimator = AnimatorSet().apply {
-            play(createScaleViewAnimator(thronesView, thronesScale)).with(createScaleViewAnimator(ringsView, ringsScale))
+            play(createScaleViewAnimator(thronesView, thronesScale)).with(
+                createScaleViewAnimator(
+                    ringsView,
+                    ringsScale
+                )
+            )
         }
         currentAnimator?.start()
     }

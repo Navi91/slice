@@ -23,8 +23,9 @@ class GamePresenter : SlidePresenter<IGameView>() {
     lateinit var gameInteractor: IGameInteractor
 
     private val actors = mutableListOf<Actor>()
-    private var nextActorIndex = FIRST_ACTOR_INDEX
-    
+    private var currentActorIndex = FIRST_ACTOR_INDEX
+    private var nextToShowActorIndex = FIRST_ACTOR_INDEX
+
     init {
         ComponentHolder.applicationComponent().inject(this)
     }
@@ -39,9 +40,10 @@ class GamePresenter : SlidePresenter<IGameView>() {
             .doAfterTerminate { viewState.setProgress(false) }
             .subscribe({
                 viewState.showGameOverlay()
-                
+
                 setGameActors(it)
-                showNextActorOrEndGame()
+                showNextActorIfExist()
+                showNextActorIfExist()
             }, {
                 log(it)
 
@@ -50,13 +52,27 @@ class GamePresenter : SlidePresenter<IGameView>() {
     }
 
     fun onThronesSelected() {
-        gameInteractor.selectSerialForActor(actors[getCurrentActorIndex()], Serial.GAME_OF_THRONES)
-        showNextActorOrEndGame()
+        if (currentActorIndex < actors.size) {
+            gameInteractor.selectSerialForActor(actors[currentActorIndex], Serial.GAME_OF_THRONES)
+            showNextActorIfExist()
+            currentActorIndex++
+        }
+
+        if (currentActorIndex == actors.lastIndex + 1) {
+            endGame()
+        }
     }
 
     fun onRingsSelected() {
-        gameInteractor.selectSerialForActor(actors[getCurrentActorIndex()], Serial.THE_LORD_OF_RINGS)
-        showNextActorOrEndGame()
+        if (currentActorIndex < actors.size) {
+            gameInteractor.selectSerialForActor(actors[currentActorIndex], Serial.THE_LORD_OF_RINGS)
+            showNextActorIfExist()
+            currentActorIndex++
+        }
+
+        if (currentActorIndex == actors.lastIndex + 1) {
+            endGame()
+        }
     }
 
     private fun setGameActors(actors: List<Actor>) {
@@ -65,21 +81,18 @@ class GamePresenter : SlidePresenter<IGameView>() {
             addAll(actors)
         }
 
-        nextActorIndex = FIRST_ACTOR_INDEX
+        currentActorIndex = FIRST_ACTOR_INDEX
+        nextToShowActorIndex = FIRST_ACTOR_INDEX
     }
-    
-    private fun showNextActorOrEndGame() {
-        if (nextActorIndex < actors.size) {
-            viewState.showActor(actors[nextActorIndex])
-            nextActorIndex++
-        } else {
-            endGame()
+
+    private fun showNextActorIfExist() {
+        if (nextToShowActorIndex < actors.size) {
+            viewState.addActor(actors[nextToShowActorIndex])
+            nextToShowActorIndex++
         }
     }
 
     private fun endGame() {
         viewState.showGameResults()
     }
-
-    private fun getCurrentActorIndex() = nextActorIndex - 1
 }
