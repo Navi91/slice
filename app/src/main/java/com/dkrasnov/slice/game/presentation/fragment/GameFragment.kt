@@ -46,7 +46,8 @@ class GameFragment : SlideFragment(), IGameView {
     lateinit var presenter: GamePresenter
 
     private var listener: GameFragmentLister? = null
-    private var currentAnimator: Animator? = null
+    private var buttonsDragAnimator: Animator? = null
+    private var actorDragAnimator: Animator? = null
     private var actorViewRatio: Float = 1f
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -80,10 +81,10 @@ class GameFragment : SlideFragment(), IGameView {
         thronesButtonView.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
                 log("throne down")
-                scaleUpThronesView()
+                animateThroneChooseDragging()
             } else if (event.action == MotionEvent.ACTION_UP) {
                 log("throne up")
-                normalizeScale()
+                normalizeViews()
             }
 
             return@setOnTouchListener false
@@ -91,10 +92,10 @@ class GameFragment : SlideFragment(), IGameView {
         ringsButtonView.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
                 log("ring down")
-                scaleUpRingsView()
+                animateRingsChooseDragging()
             } else if (event.action == MotionEvent.ACTION_UP) {
                 log("ring up")
-                normalizeScale()
+                normalizeViews()
             }
 
             return@setOnTouchListener false
@@ -133,14 +134,14 @@ class GameFragment : SlideFragment(), IGameView {
             contentLayout.addView(view)
         }
 
-        constraitActorImage(view.id)
+        constraintActorImage(view.id)
 
         GlideApp.with(this).load(actor.getAssetUri()).downsample(DownsampleStrategy.AT_LEAST).into(view.actorImageView)
 
         updateActorViewRatio()
     }
 
-    private fun constraitActorImage(@IdRes id: Int) {
+    private fun constraintActorImage(@IdRes id: Int) {
         val set = ConstraintSet()
         set.clone(contentLayout)
         set.connect(
@@ -238,7 +239,7 @@ class GameFragment : SlideFragment(), IGameView {
         }
     }
 
-    private fun scaleUpThronesView() {
+    private fun animateThroneChooseDragging() {
         updateViewScales(BUTTON_UP_SCALE, BUTTON_DOWN_SCALE)
         animateActorViewDrag(
             -ACTORE_VIEW_DRAG_ROTATION,
@@ -247,7 +248,7 @@ class GameFragment : SlideFragment(), IGameView {
         )
     }
 
-    private fun scaleUpRingsView() {
+    private fun animateRingsChooseDragging() {
         updateViewScales(BUTTON_DOWN_SCALE, BUTTON_UP_SCALE)
         animateActorViewDrag(
             ACTORE_VIEW_DRAG_ROTATION,
@@ -256,7 +257,7 @@ class GameFragment : SlideFragment(), IGameView {
         )
     }
 
-    private fun normalizeScale() {
+    private fun normalizeViews() {
         updateViewScales(BUTTON_NORMAL_SCALE, BUTTON_NORMAL_SCALE)
         animateActorViewDrag(
             0f,
@@ -264,8 +265,6 @@ class GameFragment : SlideFragment(), IGameView {
             currentActorView?.pivotY ?: 0f
         )
     }
-
-    private var actorDragAnimator: Animator? = null
 
     private fun animateActorViewDrag(rotation: Float, pivotX: Float, pivotY: Float) {
         currentActorView?.let { view ->
@@ -281,8 +280,8 @@ class GameFragment : SlideFragment(), IGameView {
     }
 
     private fun updateViewScales(thronesScale: Float, ringsScale: Float) {
-        currentAnimator?.cancel()
-        currentAnimator = AnimatorSet().apply {
+        buttonsDragAnimator?.cancel()
+        buttonsDragAnimator = AnimatorSet().apply {
             play(createScaleViewAnimator(thronesButtonView, thronesScale)).with(
                 createScaleViewAnimator(
                     ringsButtonView,
@@ -290,7 +289,7 @@ class GameFragment : SlideFragment(), IGameView {
                 )
             )
         }
-        currentAnimator?.start()
+        buttonsDragAnimator?.start()
     }
 
     private fun createScaleViewAnimator(view: View, scale: Float): Animator {
